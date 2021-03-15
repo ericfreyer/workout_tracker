@@ -13,6 +13,15 @@ app.use(express.static("public"));
 app.use(require("./routes/api.js"));
 app.use(require("./routes/view.js"));
 
+mongoose.connect(
+     process.env.MONGODB_URI || 'mongodb://localhost/lit-gorge-06187',
+     {
+       useNewUrlParser: true,
+       useUnifiedTopology: true,
+       useCreateIndex: true,
+       useFindAndModify: false
+     }
+   );
 
 
 
