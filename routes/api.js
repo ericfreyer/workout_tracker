@@ -1,47 +1,45 @@
-var db = require("../models");
+const Workout = require("../models/workout.js");
+var app = require('express').Router();
 
-module.exports = function(app) {
-  app.get("/api/workout", function(req, res) {
-    db.workout.find({})
-      .then(dbworkout => {
-        res.json(dbworkout);
+
+  app.get("/api/workouts", (req, res) => {
+    Workout.find({})
+      .then(dbWorkout => {
+        res.json(dbWorkout);
       })
       .catch(err => {
-        res.json(err);
+        res.status(400).json(err);
       });
   });
 
-  app.put("/api/workout/:id", function({body, params}, res) {
-    db.workout.findByIdAndUpdate(
-      params.id,
-      { $push: { exercises: body } },
-      { new: true }
-    )
-      .then(dbworkout => {
-        res.json(dbworkout);
+  app.post('/api/workouts', (req, res) => {
+    Workout.create({})
+        .then(dbWorkout => {
+          res.json(dbWorkout)
+        })
+        .catch((err) => {
+            res.status(400).json(err)
+        })
+  });
+
+  app.put('/api/workouts/:id', (req, res) => {
+    Workout.findByIdAndUpdate(req.params.id, {$push: {exercises: req.body}})
+        .then(dbWorkout => {
+          res.json(dbWorkout)
+        })
+        .catch((err) => {
+            res.status(400).json(err)
+        })
+  });
+
+  app.get("/api/workouts/range", (req, res) => {
+    Workout.find({})
+      .then(dbWorkout => {
+        res.json(dbWorkout);
       })
       .catch(err => {
-        res.json(err);
+        res.status(400).json(err);
       });
   });
 
-  app.post("/api/workout", (req, res) => {
-    db.workout.create({})
-      .then(dbworkout => {
-        res.json(dbworkout);
-      })
-      .catch(err => {
-        res.json(err);
-      });
-  });
-
-  app.get("/api/workout/range", function(req, res) {
-    db.workout.find({}).limit(5)
-      .then(dbworkout => {
-        res.json(dbworkout);
-      })
-      .catch(err => {
-        res.json(err);
-      });
-  });
-};
+  module.exports = app
