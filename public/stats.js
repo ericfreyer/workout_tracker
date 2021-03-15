@@ -24,7 +24,7 @@ function generatePalette() {
 function populateChart(data) {
   let durations = data.map(({ totalDuration }) => totalDuration);
   let pounds = calculateTotalWeight(data);
-  let workouts = workoutNames(data);
+  let workout = workoutNames(data);
   const colors = generatePalette();
 
   let line = document.querySelector('#canvas').getContext('2d');
