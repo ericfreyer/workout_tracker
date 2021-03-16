@@ -11,10 +11,10 @@
 * [Credits](#credits)
 
 # Installation
-Install express, mongodb. Run node server.js to initialize the program.
+Npm install, npm run seed, and mongodb. Run node server.js or npm run start to start the server locally.
 
 # Usage
-This program allows you to keep track of your workouts. 
+This program allows you to keep track of your workouts, where you can then see it charted in a graph to track your progress.
 
 # License
 No licenses.
