@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Workout = require("../models/workout.js");
 
-module.exports = function(app) {
+
   router.use(function timeLog(req, res, next) {
     console.log("Time: ", Date.now());
     next();
@@ -51,4 +51,4 @@ router.get("/api/workouts/range", (req, res) => {
       res.json(err);
     });
 });
-};
+ module.exports = router;
