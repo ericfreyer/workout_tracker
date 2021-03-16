@@ -1,10 +1,14 @@
 const router = require("express").Router();
 const Workout = require("../models/workout.js");
 
-module.exports = function (app) {
-
-  router.get("/api/workouts", function(req, res) {
-    Workout.find({})
+module.exports = function(app) {
+  router.use(function timeLog(req, res, next) {
+    console.log("Time: ", Date.now());
+    next();
+  });
+  
+  router.get("/api/workouts", (req, res) => {
+    Workout.find()
       .then(dbWorkout => {
         res.json(dbWorkout);
       })
@@ -12,40 +16,39 @@ module.exports = function (app) {
         res.json(err);
       });
   });
+  
+  router.post("/api/workouts", (req, res) => {
+  Workout.create({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
 
-  router.post('/api/workouts', (req, res) => {
-    Workout.create({})
-        .then(dbWorkout => {
-          res.json(dbWorkout)
-        })
-        .catch((err) => {
-            res.status(400).json(err)
-        })
-  });
+router.put("/api/workouts/:id", ({ body, params }, res) => {
+  Workout.findByIdAndUpdate(
+    params.id,
+    { $push: { exercises: body } },
 
-  router.put('/api/workouts/:id', (req, res) => {
-    Workout.findByIdAndUpdate(
-      params.id,
-      { $push: { exercises: body } },
-      { new: true }
-    )
-      .then(dbWorkout => {
-        res.json(dbWorkout);
-      })
-      .catch(err => {
-        res.json(err);
-      });
-  });
+    { new: true, runValidators: true }
+  )
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
 
-  router.get("/api/workouts/range", (req, res) => {
-    Workout.find({})
-      .then(dbWorkout => {
-        res.json(dbWorkout);
-      })
-      .catch(err => {
-        res.status(400).json(err);
-      });
-  });
-}
-
-module.exports = router;
+router.get("/api/workouts/range", (req, res) => {
+  Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+};
